@@ -42,4 +42,11 @@ public class Player : MonoBehaviour {
             isGround = false;
         }   
     }
+
+    private void OnDrawGizmosSelected() {
+        if(groundCheckPoint == null) {
+            return;
+        }
+        Gizmos.DrawWireSphere(groundCheckPoint.position, groundCheckRadius);
+    }
 }
