@@ -26,8 +26,8 @@ public class Player : MonoBehaviour {
          }
         Collider2D collInfo = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, whatIsGround);
 
-        if(collInfo == true){
-            Debug.Log("Player is on Ground");
+        if(collInfo){
+            isGround = true;
         }
     }
     private void FixedUpdate() {
@@ -47,6 +47,7 @@ public class Player : MonoBehaviour {
         if(groundCheckPoint == null) {
             return;
         }
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(groundCheckPoint.position, groundCheckRadius);
     }
 }
