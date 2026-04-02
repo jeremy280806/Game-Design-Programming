@@ -1,11 +1,13 @@
 using UnityEngine;
 
 public class Player : MonoBehaviour {   
+    private Animator animator;
     public Rigidbody2D rb;
     public float jumpHeight = 7f;
     public float moveSpeed = 5f;
     private float movement; 
     private bool isGround; 
+    private bool facingRight;
 
     public Transform groundCheckPoint;
     public float groundCheckRadius = .2f;
@@ -14,6 +16,8 @@ public class Player : MonoBehaviour {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start(){
         isGround = true;
+        facingRight = true;
+        animator = this.gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -29,9 +33,32 @@ public class Player : MonoBehaviour {
         if(collInfo){
             isGround = true;
         }
+
+        Flip();
+        PlayRunAnimation();   
     }
     private void FixedUpdate() {
         transform.position += new Vector3(movement * moveSpeed, 0f, 0f) * Time.fixedDeltaTime;
+    }
+
+    void PlayRunAnimation(){
+        if(Mathf.Abs(movement) > 0f){
+            animator.SetFloat("Run", 1f);   
+        }
+        else if(movement < 0.1f){
+            animator.SetFloat("Run", 0f);
+        }
+    } 
+
+    void Flip(){
+        if(movement < 0f && facingRight == true){
+            transform.eulerAngles = new Vector3(0f, -180f, 0f);
+            facingRight = false;    
+        }
+        else if(movement > 0f && facingRight == false){
+            transform.eulerAngles = new Vector3(0f, 0f, 0f);
+            facingRight = true; 
+        }
     }
 
     void Jump() {
@@ -40,6 +67,7 @@ public class Player : MonoBehaviour {
             velocity.y = jumpHeight;
             rb.linearVelocity = velocity;
             isGround = false;
+            animator.SetBool
         }   
     }
 
